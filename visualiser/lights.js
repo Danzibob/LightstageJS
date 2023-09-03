@@ -26,7 +26,7 @@ varying vec3 vColor;
 void main() {
 	vColor = color;
 	vec4 mvPosition = modelViewMatrix * vec4( position, 1.0 );
-	gl_PointSize = 0.2 * ( 300.0 / -mvPosition.z );
+	gl_PointSize = 0.08 * ( 300.0 / -mvPosition.z );
 	gl_Position = projectionMatrix * mvPosition;
 }`
 
@@ -57,26 +57,66 @@ const ledsmaterial = new THREE.ShaderMaterial( {
 var led_particle_geo = new THREE.BufferGeometry()
 var colours = []
 var positions = []
+var led_nodes = []
 
 // --- Load theoretical dome layout ---
-// Generate dome config
-const geo_dome = new GeoDome_Geometry(2, 1.5)
-// Generate LED Nodes
-const led_nodes = geo_dome.verts.map(v => new LEDNode(v))
-for (var i = 0; i < led_nodes.length; i++){
-    // Set all LEDs to 120 brightness
-	let node_colours = LEDNode.bytes_to_colours(Array(9).fill(120))
-    // Flatten positions and colours
-    colours = colours.concat(node_colours.flat())
-    positions = positions.concat(led_nodes[i].positions.flatMap(x => x.toArray()))
+function load_model_dome(){
+    // Generate dome config
+    const geo_dome = new GeoDome_Geometry(2, 1.5)
+    // Generate LED Nodes
+    led_nodes = geo_dome.verts.map(v => new LEDNode(v))
+    for (var i = 0; i < led_nodes.length; i++){
+        // Set all LEDs to 0.8 brightness
+        let node_colours = LEDNode.bytes_to_colours(Array(9).fill(0.8))
+        // Flatten positions and colours
+        colours = colours.concat(node_colours.flat())
+        positions = positions.concat(led_nodes[i].positions.flatMap(x => x.toArray()))
+    }
+
+    // Apply positions and colours to led particle geometry
+    led_particle_geo.setAttribute('color', new THREE.Float32BufferAttribute(colours, 3).setUsage(THREE.DynamicDrawUsage))
+    led_particle_geo.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3))
+    var ledparticles = new THREE.Points(led_particle_geo, ledsmaterial)
+    scene.add(ledparticles);
+}
+// --- Load Config File ---
+function load_from_file(){
+
+    var loader = new THREE.FileLoader();
+    loader.load('test.config', ( data ) => {
+        const config = JSON.parse(data)
+        const verts = config.vertex_positions[0]
+        const leds = config.led_positions[0]
+
+        positions = leds.flatMap(node => node.flat())
+
+        verts.forEach((v, i) => {
+            console.log(v, i)
+            let node = new LEDNode(new THREE.Vector3(v))
+            node.positions = leds[i].map(p => new THREE.Vector3(p))
+            led_nodes.push(node)
+        })
+
+        for (var i = 0; i < led_nodes.length; i++){
+            // Set all LEDs to 0.8 brightness
+            let node_colours = LEDNode.bytes_to_colours(Array(9).fill(0.8))
+            // Flatten positions and colours
+            colours = colours.concat(node_colours.flat())
+        }
+
+        console.log(led_nodes.length)
+
+        // Apply positions and colours to led particle geometry
+        led_particle_geo.setAttribute('color', new THREE.Float32BufferAttribute(colours, 3).setUsage(THREE.DynamicDrawUsage))
+        led_particle_geo.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3))
+        var ledparticles = new THREE.Points(led_particle_geo, ledsmaterial)
+        scene.add(ledparticles);
+
+        animate()
+    });
 }
 
-// Apply positions and colours to led particle geometry
-led_particle_geo.setAttribute('color', new THREE.Float32BufferAttribute(colours, 3).setUsage(THREE.DynamicDrawUsage))
-led_particle_geo.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3))
-var ledparticles = new THREE.Points(led_particle_geo, ledsmaterial)
-scene.add(ledparticles);
-
+load_from_file()
 
 function test_effect(t){
     // Seperate spin effects around each axis, for R, G and B
@@ -105,4 +145,4 @@ function animate() {
 	renderer.render( scene, camera )
     frame++
 }
-animate()
+// animate()
