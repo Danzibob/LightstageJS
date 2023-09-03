@@ -78,6 +78,7 @@ function load_model_dome(){
     led_particle_geo.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3))
     var ledparticles = new THREE.Points(led_particle_geo, ledsmaterial)
     scene.add(ledparticles);
+    animate()
 }
 // --- Load Config File ---
 function load_from_file(){
@@ -85,15 +86,14 @@ function load_from_file(){
     var loader = new THREE.FileLoader();
     loader.load('test.config', ( data ) => {
         const config = JSON.parse(data)
+        // Only load the first chain
         const verts = config.vertex_positions[0]
         const leds = config.led_positions[0]
 
-        positions = leds.flatMap(node => node.flat())
-
         verts.forEach((v, i) => {
             console.log(v, i)
-            let node = new LEDNode(new THREE.Vector3(v))
-            node.positions = leds[i].map(p => new THREE.Vector3(p))
+            let node = new LEDNode(new THREE.Vector3(...v))
+            node.positions = leds[i].map(p => new THREE.Vector3(...p))
             led_nodes.push(node)
         })
 
@@ -102,21 +102,22 @@ function load_from_file(){
             let node_colours = LEDNode.bytes_to_colours(Array(9).fill(0.8))
             // Flatten positions and colours
             colours = colours.concat(node_colours.flat())
+            positions = positions.concat(led_nodes[i].positions.flatMap(x => x.toArray()))
         }
 
-        console.log(led_nodes.length)
+        // console.log(colours)
 
         // Apply positions and colours to led particle geometry
         led_particle_geo.setAttribute('color', new THREE.Float32BufferAttribute(colours, 3).setUsage(THREE.DynamicDrawUsage))
         led_particle_geo.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3))
         var ledparticles = new THREE.Points(led_particle_geo, ledsmaterial)
         scene.add(ledparticles);
-
         animate()
     });
 }
 
-load_from_file()
+// load_from_file()
+load_model_dome()
 
 function test_effect(t){
     // Seperate spin effects around each axis, for R, G and B
@@ -138,11 +139,11 @@ function test_effect(t){
 
 
 // Animate the scene
-let frame = 0
+var frame = 0
 function animate() {
     test_effect(frame)
 	requestAnimationFrame( animate )
 	renderer.render( scene, camera )
     frame++
 }
-// animate()
+animate()
