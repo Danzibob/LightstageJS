@@ -1,7 +1,7 @@
 import * as THREE from 'three'
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { GeoDome_Geometry} from '/lib/geometry.js'
-import { LEDNode } from './led_node.js'
+import { LEDNode } from '../lib/led_node.js'
 
 // ---=== Set up scene and renderer ===---
 
