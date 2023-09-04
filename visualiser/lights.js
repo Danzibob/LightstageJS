@@ -31,7 +31,7 @@ const FRAMES_PER_LOOP = 8
 // Export animation
 let s = ""
 for(let t = 0; t < FRAMES_PER_LOOP; t++){
-    let effect_angle = ((t/FRAMES_PER_LOOP)%2) * Math.PI
+    let effect_angle = (t/FRAMES_PER_LOOP)% (2 * Math.PI)
     dome.effect(segment_spin_px, effect_angle, 2*Math.PI/3)
     let f =  dome.export_current_frame()
     console.log(f)
