@@ -21,7 +21,7 @@ var axesHelper = new THREE.AxesHelper(1);
 scene.add( axesHelper );
 
 let dome = new LightingInterface()
-await dome.load_geo_from_file("/dome.config")
+await dome.load_geo_from_file("../dome.config")
 // dome.load_geo_dome(2,1.5)
 dome.init_particles(scene)
 
