@@ -133,8 +133,9 @@ export class LightingInterface{
     export_current_frame(){
         return this.nodes.reduce((export_str, _, i) => {
             let node_values = this.led_values.slice(i*9, i*9 + 9)
+                                .map(v => Math.round(v*255))
             return export_str + `${i}\t${node_values.join("\t")}\n`
-        })
+        }, "")
     }
 }
 

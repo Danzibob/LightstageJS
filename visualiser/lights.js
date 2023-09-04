@@ -33,8 +33,9 @@ let s = ""
 for(let t = 0; t < FRAMES_PER_LOOP; t++){
     let effect_angle = ((t/FRAMES_PER_LOOP)%2) * Math.PI
     dome.effect(segment_spin_px, effect_angle, 2*Math.PI/3)
-    s += dome.export_current_frame()
-    s += "show\n"
+    let f =  dome.export_current_frame()
+    console.log(f)
+    s += f + "show\n"
 }
 console.log(s)
 
