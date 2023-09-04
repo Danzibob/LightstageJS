@@ -7,7 +7,7 @@ export function segment_spin_px(node_index, node, effect_angle, segment_angle){
     let offset = (node_angle - effect_angle + Math.PI*2) % (Math.PI*2)
 
     // Set brightness based on position & angle
-    let brightness = offset < segment_angle ? 1 : 0
+    let brightness = offset < segment_angle ? 0.5 : 0
 
     // Override to only the middle 2m of the dome
     if(Math.abs(node.pos.y) > 1) brightness = 0
