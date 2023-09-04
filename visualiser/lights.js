@@ -1,7 +1,7 @@
 import * as THREE from 'three'
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { LightingInterface } from '/visualiser/visualiser.js'
-import { segment_spin_px } from 'lighting_effects'
+import { segment_spin_px, snake } from 'lighting_effects'
 
 // ---=== Set up scene and renderer ===---
 
@@ -21,19 +21,33 @@ var axesHelper = new THREE.AxesHelper(1);
 scene.add( axesHelper );
 
 let dome = new LightingInterface()
-// await dome.load_geo_from_file("/test.config")
-dome.load_geo_dome(2,1.5)
+await dome.load_geo_from_file("/dome.config")
+// dome.load_geo_dome(2,1.5)
 dome.init_particles(scene)
 
 
-// Animate the scene
-var frame = 0
 const FRAMES_PER_LOOP = 60
+
+// Export animation
+let s = ""
+for(let t = 0; t < FRAMES_PER_LOOP; t++){
+    let effect_angle = ((t/FRAMES_PER_LOOP)%2) * Math.PI
+    dome.effect(segment_spin_px, effect_angle, 2*Math.PI/3)
+    s += dome.export_current_frame()
+    s += "show\n"
+}
+console.log(s)
+
+// Animate the scene
+let frame = 0
 function animate() {
     let effect_angle = ((frame/FRAMES_PER_LOOP)%2) * Math.PI
     dome.effect(segment_spin_px, effect_angle, 2*Math.PI/3)
+    frame++
 	requestAnimationFrame( animate )
 	renderer.render( scene, camera )
-    frame++
 }
+
 animate()
+
+

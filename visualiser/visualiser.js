@@ -118,7 +118,7 @@ export class LightingInterface{
     // updates once every node has been recalculated
     effect(func, ...params){
         this.nodes.forEach((node, idx) => {
-            let node_values = func(node, ...params)
+            let node_values = func(idx, node, ...params)
             this.set_node(idx, node_values, false)
         })
         this.update()
@@ -169,11 +169,3 @@ const ledsmaterial = new THREE.ShaderMaterial( {
 	transparent:    true,
 	vertexColors:   true
 });
-
-// ---=== Helper Functions ===---
-function load_file_async(path){
-    return new Promise((resolve, reject) => {
-        const loader = new THREE.FileLoader();
-        loader.load(path, resolve, null, reject)
-  });
-}

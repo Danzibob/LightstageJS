@@ -19,14 +19,19 @@ const controls = new OrbitControls( camera, renderer.domElement );
 var axesHelper = new THREE.AxesHelper(1);
 scene.add( axesHelper );
 
+scene.add(new THREE.AmbientLight( 0xaaaaaa )) // soft white ambient light
+const light = new THREE.PointLight( 0xffffff, 10, 100 );
+light.position.set( 0,0,0 );
+scene.add( light );
+
 const BASE_COLOR = 0x888888
 const HOVER_COLOR = 0x22cc00
 const nodeCollisionMesh = new THREE.CylinderGeometry(0.08,0.08,0.05,9)
-const nodeMeshMaterial = new THREE.MeshBasicMaterial({color: BASE_COLOR})
+const nodeMeshMaterial = new THREE.MeshPhongMaterial({color: BASE_COLOR})
 const UP = new THREE.Vector3(0, 1, 0);
 
 function initialize_configurator(scene){
-    // Step 1: Get dome dimensions & style from user
+    // Step 1: Get dome dimensions &04040 style from user
     // (use prompt or something)
     const DOME_RADIUS = 1.5
     const DOME_ORDER = 2
@@ -44,9 +49,10 @@ function initialize_configurator(scene){
             nodeMeshMaterial.clone())
         // Rotate the mesh into place
         node_mesh.position.set(v.pos.x, v.pos.y, v.pos.z)
-        let D = v.pos.clone().normalize()
+        let D = v.pos.clone().setY(Math.abs(v.pos.y)).normalize()
         let axis = new THREE.Vector3().crossVectors(UP, D);
         let angle = Math.acos(UP.dot(D));
+        angle = v.pos.y > 0 ? angle : -angle
         node_mesh.rotateOnAxis(axis, angle)
 
         NODE_MESHES.push(node_mesh)
@@ -86,7 +92,12 @@ function initialize_configurator(scene){
     }
     document.onclick = function(e){
         console.log(last_hover)
-        if(last_hover > -1) CONFIG.add_node_to_active(last_hover)
+        if(last_hover > -1){
+            CONFIG.add_node_to_active(last_hover)
+            let pos = NODE_MESHES[last_hover].position
+            console.log(pos)
+            NODE_MESHES[last_hover].position.set(pos.x*0.6, pos.y*0.6, pos.z*0.6)
+        }
     }
 
     function set_up_configurator_scene(scene){
