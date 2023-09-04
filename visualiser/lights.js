@@ -31,10 +31,11 @@ const FRAMES_PER_LOOP = 8
 // Export animation
 let s = ""
 for(let t = 0; t < FRAMES_PER_LOOP; t++){
-    let effect_angle = (t/FRAMES_PER_LOOP)% (2 * Math.PI)
+    let effect_angle = (t/FRAMES_PER_LOOP)%1 * (Math.PI*2)
+    console.log(effect_angle)
     dome.effect(segment_spin_px, effect_angle, 2*Math.PI/3)
     let f =  dome.export_current_frame()
-    console.log(f)
+    // console.log(f)
     s += f + "show\n"
 }
 console.log(s)
@@ -42,7 +43,7 @@ console.log(s)
 // Animate the scene
 let frame = 0
 function animate() {
-    let effect_angle = (frame/FRAMES_PER_LOOP)% (2 * Math.PI)
+    let effect_angle = (frame/FRAMES_PER_LOOP)%1 * (Math.PI*2)
     dome.effect(segment_spin_px, effect_angle, 2*Math.PI/3)
     frame++
 	requestAnimationFrame( animate )
