@@ -42,7 +42,7 @@ console.log(s)
 // Animate the scene
 let frame = 0
 function animate() {
-    let effect_angle = ((frame/FRAMES_PER_LOOP)%2) * Math.PI
+    let effect_angle = (frame/FRAMES_PER_LOOP)% (2 * Math.PI)
     dome.effect(segment_spin_px, effect_angle, 2*Math.PI/3)
     frame++
 	requestAnimationFrame( animate )
