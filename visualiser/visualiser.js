@@ -159,7 +159,7 @@ void main() {
 }`
 
 var uniforms = {
-	spark:   { value: new THREE.TextureLoader().load( "/spark1.png" ) }
+	spark:   { value: new THREE.TextureLoader().load( "../spark1.png" ) }
 };
 const ledsmaterial = new THREE.ShaderMaterial( {
 	uniforms:       uniforms,
