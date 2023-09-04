@@ -81,14 +81,14 @@ export class LightingInterface{
 
         // Get positions from nodes list
         var positions = this.nodes.flatMap(n => n.positions.flatMap(x => x.toArray()))
-        var colours = Array(positions.length).fill(0.0)
+        var colors = Array(positions.length).fill(0.0)
         
-        // Also create internal colour data list
+        // Also create internal color data list
         this.led_values = Array(9 * this.nodes.length).fill(0.0)
 
-        // Apply positions and colours to led particle geometry
+        // Apply positions and colors to led particle geometry
         this.led_geom = new THREE.BufferGeometry()
-        this.led_geom.setAttribute('color', new THREE.Float32BufferAttribute(colours, 3).setUsage(THREE.DynamicDrawUsage))
+        this.led_geom.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3).setUsage(THREE.DynamicDrawUsage))
         this.led_geom.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3))
         
         // Create the objects and add them to the scene
@@ -99,15 +99,15 @@ export class LightingInterface{
         this.init_stage = INITIALISED
     }
 
-    // Sets a node's colour based on a [node_size] byte array
+    // Sets a node's color based on a [node_size] byte array
     // updates internal representation and visualisation
     set_node(i, data, update){
         // TODO: fix hard-coded number of LEDs per node
         this.led_values.splice(i*9, 9, ...data)
-        // Convert node data to rgb colours for display
-        let rgb_colours = LEDNode.bytes_to_colours(data).flat()
+        // Convert node data to rgb colors for display
+        let rgb_colors = LEDNode.bytes_to_colors(data).flat()
         // Write this to the particle object
-        rgb_colours.forEach((color_component, idx) => 
+        rgb_colors.forEach((color_component, idx) => 
             this.led_geom.attributes.color.array[i*27+idx] = color_component
         )
         // Update only if required
@@ -124,7 +124,7 @@ export class LightingInterface{
         this.update()
     }
 
-    // Updates node colours for the visualization
+    // Updates node colors for the visualization
     update() {
         this.led_geom.attributes.color.needsUpdate = true
     }
