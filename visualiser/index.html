@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset=utf-8>
+		<title>Dome.js</title>
+		<style>
+			body { margin: 0; }
+			canvas { width: 100%; height: 100% }
+		</style>
+	</head>
+	<body>
+        <script type="importmap">
+            {
+              "imports": {
+                "three": "https://unpkg.com/three/build/three.module.js",
+                "three/addons/": "https://unpkg.com/three/examples/jsm/",
+                "lighting_effects": "/visualiser/effects.js"
+              }
+            }
+          </script>
+        <script type="module" src="/lib/geometry.js"></script>
+        <script type="module" src="/visualiser/visualiser.js"></script>
+        <script type="module" src="/visualiser/lights.js"></script>
+        <script type="module" src="/lib/led_node.js"></script>
+	</body>
+</html>
