@@ -1,8 +1,8 @@
 import * as THREE from 'three'
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import * as dat from "dat.gui"
-import { GeoDome_Geometry} from '/lib/geometry.js'
-import { LEDNode, BYTE_ORDER} from '/lib/led_node.js'
+import { GeoDome_Geometry} from 'geometry'
+import { LEDNode, BYTE_ORDER} from 'led_node'
 
 var scene = new THREE.Scene();
 var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);

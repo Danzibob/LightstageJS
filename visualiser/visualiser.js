@@ -1,6 +1,6 @@
 import * as THREE from 'three'
-import { LEDNode } from '/lib/led_node.js'
-import { GeoDome_Geometry} from '/lib/geometry.js'
+import { LEDNode } from 'led_node'
+import { GeoDome_Geometry} from 'geometry'
 
 const PRE_INIT = 0
 const DATA_LOADED = 1

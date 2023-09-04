@@ -1,6 +1,6 @@
 import * as THREE from 'three'
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-import { LightingInterface } from '/visualiser/visualiser.js'
+import { LightingInterface } from 'visualiser'
 import { segment_spin_px, snake } from 'lighting_effects'
 
 // ---=== Set up scene and renderer ===---
