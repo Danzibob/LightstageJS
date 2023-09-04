@@ -26,7 +26,7 @@ await dome.load_geo_from_file("/dome.config")
 dome.init_particles(scene)
 
 
-const FRAMES_PER_LOOP = 8
+const FRAMES_PER_LOOP = 80
 
 // Export animation
 let s = ""
