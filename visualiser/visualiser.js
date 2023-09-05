@@ -124,6 +124,15 @@ export class LightingInterface{
         this.update()
     }
 
+    // Sets the visuals with the same data format as the real dome
+    set_with_byte_array(data){
+        this.data.forEach((_, idx) => {
+            let node_values = data.slice(idx*9, idx*9 + 9)
+            this.set_node(idx, node_values, false)
+        })
+        this.update()
+    }
+
     // Updates node colors for the visualization
     update() {
         this.led_geom.attributes.color.needsUpdate = true
