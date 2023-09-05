@@ -27,7 +27,7 @@ Future plans include a way to connect to the physical dome via this interface an
 ## Configurator
 The configurator is used to generate a config file that represents the light stage. This file takes the following format:
 
-```JSON
+```
 {
     byte_order: "RGBW...",
     vertex_positions: [
