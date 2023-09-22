@@ -2,6 +2,7 @@ import * as THREE from 'three'
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { LightingInterface } from 'visualiser'
 import { segment_spin_px, snake } from 'lighting_effects'
+import { rainbow_spiral } from './effects.js';
 
 // ---=== Set up scene and renderer ===---
 
@@ -26,14 +27,13 @@ await dome.load_geo_from_file("../dome.config")
 dome.init_particles(scene)
 
 
-const FRAMES_PER_LOOP = 80
-
+const FRAMES_PER_LOOP = 60
+const LOOPS = 1
 // Export animation
 let s = ""
-for(let t = 0; t < FRAMES_PER_LOOP; t++){
-    let effect_angle = (t/FRAMES_PER_LOOP)%1 * (Math.PI*2)
-    console.log(effect_angle)
-    dome.effect(segment_spin_px, effect_angle, 2*Math.PI/3)
+for(let t = 0; t < FRAMES_PER_LOOP * LOOPS; t++){
+    let animation_progress = (t/FRAMES_PER_LOOP)
+    dome.effect(rainbow_spiral, animation_progress, 2*Math.PI/3)
     let f =  dome.export_current_frame()
     // console.log(f)
     s += f + "show\n"
@@ -43,13 +43,12 @@ console.log(s)
 // Animate the scene
 let frame = 0
 function animate() {
-    let effect_angle = (frame/FRAMES_PER_LOOP)%1 * (Math.PI*2)
-    dome.effect(segment_spin_px, effect_angle, 2*Math.PI/3)
+    let animation_progress = (frame/FRAMES_PER_LOOP)
+    dome.effect(rainbow_spiral, animation_progress)
     frame++
 	requestAnimationFrame( animate )
 	renderer.render( scene, camera )
 }
 
 animate()
-
 
